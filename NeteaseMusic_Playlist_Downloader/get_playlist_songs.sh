@@ -8,6 +8,12 @@
 # 	    maybe later
 # WARNING: IF AN ERROR OCCURRED, PLEASE DOWNLOAD MANUALLY 
 
+# /artist_title
+#     mp3
+#	  albumPic
+#	  lrc
+#	  info 
+
 
 echo "usage: get_playlist_songs.sh playlist_id"
 
