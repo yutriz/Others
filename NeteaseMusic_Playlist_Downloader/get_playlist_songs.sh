@@ -51,7 +51,6 @@ do
 	# more situation?
 	# newest: windows path can not contain \ / : " ? < > |
 	# adding  sed 's/\>/＞/g' ， then you get 
-	# ユメ+ミライ=無限大 (黒澤ルビィ Solo Ver.) --> ＜ユメ+＜ミライ=＜無限大 (＜黒澤ルビィ ＜Solo ＜Ver.)
 	ti=$( echo $ti | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
 	al=$( echo $al | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
 
