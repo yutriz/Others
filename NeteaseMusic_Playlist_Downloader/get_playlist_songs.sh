@@ -99,8 +99,8 @@ do
 
 	echo "downloading ${dir} ..."
 
-	wget -qO ${dir}\/${dir}.mp3 ${mp3Url:1:-1}
-	wget -qO ${dir}\/${dir}_AlbumPic.jpg ${al_pic_url:1:-1}
+	wget -qO "${dir}/${dir}.mp3" ${mp3Url:1:-1}
+	wget -qO "${dir}/${dir}_AlbumPic.jpg" ${al_pic_url:1:-1}
 	echo "ti:$ti" > ${dir}\/info.txt
 	echo "tti:$tti" >> ${dir}\/info.txt
 	echo "ar:$ar" >> ${dir}\/info.txt
