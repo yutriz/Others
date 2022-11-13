@@ -1,0 +1,22 @@
+NeteaseMusic Playlist Download
+	试用作
+
+	依赖:
+		jq
+		eyeD3
+
+	usage:
+		~.sh playlistID, 在脚本所在目录下载歌单全部歌曲
+		pwd
+			~.sh
+			artist1_title1
+				info
+				~.mp3
+				~.lrc
+				~_roma.lrc
+				~_zh.lrc
+				
+	已知问题:
+		不同Album的同Artist同Title只会下载一次 
+		封面图片格式
+	
