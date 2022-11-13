@@ -8,12 +8,6 @@
 # 	    maybe later
 # WARNING: IF AN ERROR OCCURRED, PLEASE DOWNLOAD MANUALLY 
 
-# /artist_title
-#     mp3
-#	  albumPic
-#	  lrc
-#	  info 
-
 
 echo "usage: get_playlist_songs.sh playlist_id"
 
@@ -38,8 +32,10 @@ do
 	
 	if [ "$tti" != "null" ]
 	then
-		tti=${tti:1:-1}
+		# why? coz [SpaceSpace"title"]
+		tti=${tti:3:-1}
 	fi
+
 
 	# multi artists 
 	ars=$( cat tmp | jq '.songs[]|.ar[]|.name' | sed 's/\"//g' )
@@ -49,7 +45,6 @@ do
 		ar=${ar}\&${i}
 	done
 	ar=${ar/\&/}
-		
 	ti=${ti:1:-1}
 	al=${al:1:-1}
 
@@ -57,17 +52,19 @@ do
 	# more situation?
 	# newest: windows path can not contain \ / : " ? < > |
 	# adding  sed 's/\>/＞/g' ， then you get 
-	ti=$( echo $ti | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
-	al=$( echo $al | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
+	# ユメ+ミライ=無限大 (黒澤ルビィ Solo Ver.) --> ＜ユメ+＜ミライ=＜無限大 (＜黒澤ルビィ ＜Solo ＜Ver.)
+	ti_d=$( echo $ti | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
+	al_d=$( echo $al | sed 's/\\"/〝/g;s/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g' )
 
 
 
 	# don not like space in filenames in linux 
-	ti=${ti// /_}
-	ar=${ar// /_}
-	al=${al// /_}
+	ti_d=${ti_d// /_}
+	ar_d=${ar// /_}
+	# the directory doesn't contain album name 
+	al_d=${al// /_}
 		
-	dir=${ar}_${ti}
+	dir=${ar_d}_${ti_d}
 	
 	# in Windows, folder name ended with "." brings problem
 	while [ "${dir: -1}" == "." ]
@@ -109,8 +106,19 @@ do
 	echo "ar:$ar" >> ${dir}\/info.txt
 	echo "al:$al" >> ${dir}\/info.txt
 
+	# eyeD3 add tags 
+	eyeD3 -a "$ar" ${dir}\/${dir}.mp3
+	eyeD3 -A "$al" ${dir}\/${dir}.mp3
+	eyeD3 -t "$ti" ${dir}\/${dir}.mp3
+	eyeD3 --add-image ${dir}\/${dir}_AlbumPic.jpg:FRONT_COVER ${dir}\/${dir}.mp3
+
+
+	# make a list  
+	# NeteaseMusicId	title	artist
+	echo -e "NeteaseMusicId\t\tTitle\t\tArtist\t\talbum" > Playlist$1Details
+	echo -e "$SongId\t\t$ti\t\t$ar\t\t$al" >>  Playlist$1Details	
 
 done < $SongIdFile
 
 rm tmp
-
+rm $SongIdFile 
