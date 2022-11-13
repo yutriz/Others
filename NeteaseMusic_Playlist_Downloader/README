@@ -1,7 +1,11 @@
 NeteaseMusic Playlist Download
+	updated on Nov 14, 2022
+	
 	试用作
-
-	依赖:
+	
+	
+	依赖:	
+		https://github.com/Binaryify/NeteaseCloudMusicApi
 		jq
 		eyeD3
 
