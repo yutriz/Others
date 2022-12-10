@@ -3,11 +3,11 @@ NeteaseMusic Playlist Download
 DownloadPlaylist.sh
 	Updated on Dec 10, 2022
 	
-	WORKS FINE ON LINUX 
+	!!: WORKS FINE ONLY ON LINUX 
 
 	Dependency
 		https://github.com/Binaryify/NeteaseCloudMusicApi
-        jq
+		jq
 		https://github.com/Martchus/tageditor
 		
 	usage
