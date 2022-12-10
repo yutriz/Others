@@ -1,6 +1,37 @@
 NeteaseMusic Playlist Download
+
+DownloadPlaylist.sh
+	Updated on Dec 10, 2022
+	
+	WORKS FINE ON LINUX 
+
+	Dependency
+		https://github.com/Binaryify/NeteaseCloudMusicApi
+        jq
+		https://github.com/Martchus/tageditor
+		
+	usage
+		Downloadplaylist.sh -h
+		
+		/path/playlist_name/
+			001/
+				Title.audioFile
+				Title.lrc
+				Title_zh.lrc
+				Title_romaji.lrc
+				info
+				albumPic.imageFile
+			002/
+			003/
+			......
+
+
+get_playlist_songs.sh
+
 	updated on Nov 14, 2022
 	
+	Windows 	
+
 	试用作
 	可能出现下载或者tag失败,请手动	
 	
