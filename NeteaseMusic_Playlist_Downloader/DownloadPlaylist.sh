@@ -13,7 +13,7 @@
 #  IF AN ERROR OCCURRED, PLEASE DOWNLOAD MANUALLY
 
 
-echo "usage: getPlaylist.sh [-p playlist_id] [-P path] [-v download_vip_songs(true/false)] [--acc] [--pw] [-c cookie]"
+echo "usage: getPlaylist.sh [-p playlist_id] [-P path] [-v download_vip_songs(true/false)] [--acc] [--pw] [-c cookie] [-n name file with pure number]"
 echo  -e "Mutli-playlist not supported yet\n\n"
 
 scrpt_name=$0
@@ -47,32 +47,35 @@ done
 dl_VIP=true;
 
 dl_path=`pwd`
-win_sys=true;
-
+win_sys=true
+onlyNum=false
 OPTIND=1
 
-while getopts 'c:v:p:A:C:P:h' opt; do
+while getopts 'c:p:v:A:C:P:hn' opt; do
 	case "$opt" in
+		'c')
+			cookieFile=$OPTARG
+			;;
 		'p')
 			playlistId=$OPTARG
 			;;
-		P)
-			dl_path=$OPTARG	
-			;;
-		v)
+		'v')
 			dl_VIP=$OPTARG
 			;;
-		A)
+		'A')
 			account=$OPTARG
 			;;
-		C)
+		'C')
 			pw=$OPTARG
 			;;
-		c)
-			cookieFile=$OPTARG
+		'P')
+			dl_path=$OPTARG	
 			;;
 		'h')
 			echo usage
+			;;
+		'n')
+			onlyNum=true
 			;;
 		'?')
 			echo -e "Usage: \n $scrpt_name [-h] [-p] [-v] [-P] [--help] [--pid] [--path] [--vip]" 1>&2
@@ -90,13 +93,6 @@ then
 	dl_path=${dl_path:0:-1}
 fi
 
-# ckpt
-echo "pid is ${playlistId}"
-echo -e "dl_path is $dl_path \n"
-echo -e "acc is $account"
-echo -e "pw is $pw"
-echo -e "cookie is $cookieFile"
-
 
 # get playlist information 
 playlist_adr="http://localhost:3000/playlist/detail?id=$playlistId"
@@ -111,6 +107,7 @@ playlist_coverImgExt=${playlist_coverImgUrl##*.}
 
 playlist_name=${playlist_name:1:-1}
 jug="first"
+# remove '"' 
 while [ $(printf %s "$playlist_name" | grep '"') ]
 do
 	if [ "$jug" == "first" ]
@@ -128,7 +125,6 @@ done
 
 mkdir $dl_path
 dir=${dl_path}/${playlist_name}
-
 
 mkdir $dir
 
@@ -152,7 +148,6 @@ echo $playlist_info | jq '.playlist.trackIds[] | .id' > $SongIdFile
 # counter 
 total=`cat $SongIdFile | wc -l`
 count=0
-
 
 while read SongId
 do
@@ -220,6 +215,11 @@ do
 	AudioUrl=${AudioUrl:1:-1}
 	AudioExt=${AudioUrl##*.} 
 
+	if [ "$onlyNum" == "true" ]
+	then
+		ti_dir=$num_dir
+	fi
+
 	# lyrics
 	lrcInfo=`wget http://localhost:3000/lyric?id=$SongId -qO -`
 	# ja
@@ -237,11 +237,11 @@ do
 
 	AudioFile="${ti_dir}.$AudioExt"
 
-	# ckpt
-	echo "ckpt:"
+	# ckpti
+	echo -e "\nckpt:"
 	echo "ti is $ti"
 	echo "al is $al"
-	echo "AudioFile name is $AudioFile"
+	echo -e "AudioFile name is $AudioFile \n"
 	
 	# download
 	echo "downloading $ti, it's $count/$total"
@@ -276,11 +276,11 @@ do
 
 	# there is c_ti full-width characters in title string
 	# NOTICE: to be supplemented, 
-	tmp=`echo "$ti" | sed 's/[一-龯ぁ-んァ-ヾー々！-｠]//g'`
+	tmp=`echo "$ti" | sed 's/'[^\x00-\xff]'//g'`
 	c_ti=$(( ${#ti} - ${#tmp} ))
-	tmp=`echo "$ar" | sed 's/[一-龯ぁ-んァ-ヾー々！-｠]//g'`
+	tmp=`echo "$ar" | sed 's/'[^\x00-\xff]'//g'`
 	c_ar=$(( ${#ar} - ${#tmp} ))
-	tmp=`echo "$al" | sed 's/[一-龯ぁ-んァ-ヾー々！-｠]//g'`
+	tmp=`echo "$al" | sed 's/'[^\x00-\xff]'//g'`
 	c_al=$(( ${#al} - ${#tmp} ))
 	
 	n_ti=$(( 50+$c_ti ))
