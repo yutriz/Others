@@ -193,6 +193,8 @@ do
 			fi
 	done
 	# older ver 
+
+	# invalid chars \/:*?"<>|
 	# ti_dir=$( echo $ti | sed 's/\"/〝/g;s/\\?/？/g;s/\?/？/g;s/\\!/！/g;s/\!/！/g;s/\\:/：/g;s/\:/：/g;s/\\</＜/g;s/\\>/＞/g;s/\\-/_/g;s/(/（/g;s/)/）/g;s/=/＝/g;s/+/＋/g' )
 
 	# maximum 999
