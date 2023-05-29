@@ -4,7 +4,7 @@ NeteaseMusic Playlist Download
 
 	Dependency
 		https://github.com/Binaryify/NeteaseCloudMusicApi
-		jq
+		https://github.com/stedolan/jq
 		https://github.com/Martchus/tageditor
 	
 	quicktools.sh -p playlistID
