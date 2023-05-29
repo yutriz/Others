@@ -7,6 +7,7 @@ NeteaseMusic Playlist Download
 		jq
 		https://github.com/Martchus/tageditor
 	
+	quicktools.sh -p playlistID
 	Be like  
 		/path/playlist_name/
 			title_artist/
